@@ -2,7 +2,6 @@ package com.mimi.入门;
 
 import akka.actor.*;
 import akka.pattern.CircuitBreaker;
-import scala.ref.SoftReference;
 
 import java.time.Duration;
 import java.util.concurrent.Callable;
@@ -47,13 +46,21 @@ public class CircuitBreakerDemo {
             // 如果在半开启状态中处理第一个请求成功，则关闭熔断器，如果失败则重回开启状态。
             this.breaker = new CircuitBreaker(getContext().dispatcher(), getContext().system().scheduler(),
                     3, Duration.ofSeconds(1), Duration.ofSeconds(15))
-                    .onOpen(
-                            new SoftReference("---> 熔断器开启")
-                    ).onHalfOpen(
-                            new SoftReference("---> 熔断器半开启")
-                    ).onClose(
-                            new SoftReference("---> 熔断器关闭开启")
-                    );
+                    .onOpen(new Runnable() {
+                        public void run() {
+                            System.out.println("---> 熔断器开启");
+                        }
+                    }).onHalfOpen(new Runnable() {
+                        @Override
+                        public void run() {
+                            System.out.println("---> 熔断器半开启");
+                        }
+                    }).onClose(new Runnable() {
+                        @Override
+                        public void run() {
+                            System.out.println("---> 熔断器关闭");
+                        }
+                    });
 
         }
 
