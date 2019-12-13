@@ -7,8 +7,11 @@ package com.mimi;
 public class Hello {
 
     public static void main(String[] args) {
-        HelloGroovy helloGroovy = new HelloGroovy();
-        helloGroovy.test();
+
+        System.out.println(Runtime.getRuntime().availableProcessors());
+
+        /*HelloGroovy helloGroovy = new HelloGroovy();
+        helloGroovy.test();*/
 
     }
 
